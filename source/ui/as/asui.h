@@ -25,19 +25,11 @@ void GarbageCollectEventListenersFunctions( Rml::Core::EventListenerInstancer *i
 class UI_ScriptDocument : public Rml::Core::ElementDocument
 {
 private:
-	int numScriptsAdded;
 	ASInterface *as;
 	asIScriptModule *module;
 	bool isLoading;
 	unsigned numScripts;
-
-	// TODO: proper PostponedEvent that handles reference counting and event instancing!
-
-	// mechanism that calls onload events after all of AS scripts are built
-	typedef std::list<Rml::Core::Event*> PostponedList;
-	PostponedList onloads;
-
-	Rml::Core::ScriptObject owner;
+	Rml::Core::ScriptObject script_object;
 
 public:
 	UI_ScriptDocument( const std::string &tag );
@@ -47,9 +39,11 @@ public:
 
 	virtual void LoadScript( Rml::Core::Stream *stream, const std::string &source_name ) override;
 
-	virtual void ProcessDefaultAction( Rml::Core::Event& event ) override;
+	void SetScriptObject( Rml::Core::ScriptObject script_object_ ) { script_object = script_object_; }
+	virtual Rml::Core::ScriptObject GetScriptObject( void ) const override { return script_object; }
 
-	virtual Rml::Core::ScriptObject GetScriptObject( void ) const override;
+	void BuildScripts( void );
+	void DestroyScripts( void );
 
 	bool IsLoading( void ) const { return isLoading; }
 };

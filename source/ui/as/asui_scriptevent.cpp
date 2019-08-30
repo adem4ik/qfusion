@@ -153,8 +153,6 @@ public:
 		}
 
 		if( funcPtr.isValid() ) {
-			//target->AddReference();
-			//event.AddReference();
 			try {
 				asIScriptContext *context = asmodule->getContext();
 
@@ -229,7 +227,7 @@ public:
 		Element *elem = event.GetTargetElement();
 
 		UI_ScriptDocument *document = dynamic_cast<UI_ScriptDocument *>( elem->GetOwnerDocument() );
-		if( !document || document->IsLoading() ) {
+		if( !document ) {
 			return;
 		}
 

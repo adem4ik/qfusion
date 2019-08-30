@@ -10,7 +10,7 @@
 namespace WSWUI
 {
 // RocketModule contains details and interface to libRocket
-class RocketModule
+class RocketModule : public Rml::Core::Plugin
 {
 	// some typical Rocket shortcuts
 	typedef Rml::Core::Element Element;
@@ -48,7 +48,7 @@ public:
 	void update( void );
 	void render( int contextId );
 
-	Rml::Core::ElementDocument *loadDocument( int contextId, const char *filename, bool show = false, void *user_data = NULL );
+	Rml::Core::ElementDocument *loadDocument( int contextId, const char *filename, bool show = false, void *script_object = NULL );
 	void closeDocument( Rml::Core::ElementDocument *doc );
 
 	// called from ElementInstancer after it instances an element, set up default
@@ -65,7 +65,17 @@ public:
 
 	int idForContext( Rml::Core::Context *context );
 
-private:
+	/// Called when the plugin is registered to determine
+	/// which of the above event types the plugin is interested in
+	virtual int GetEventClasses() override;
+	/// Called when a document is successfully loaded from file or instanced, initialised and added
+	/// to its context. This is called before the document's 'load' event.
+	virtual void OnDocumentLoad( Rml::Core::ElementDocument *document ) override;
+	/// Called when a document is unloaded from its context. This is called after the document's
+	/// 'unload' event.
+	virtual void OnDocumentUnload( Rml::Core::ElementDocument *document ) override;
+
+   private:
 	void registerElement( const char *tag, Rml::Core::ElementInstancer* );
 	void registerFontEffect( const char *name, Rml::Core::FontEffectInstancer * );
 	void registerDecorator( const char *name, Rml::Core::DecoratorInstancer * );
@@ -89,7 +99,7 @@ private:
 	UI_SystemInterface *systemInterface;
 	UI_FileInterface *fsInterface;
 	UI_RenderInterface *renderInterface;
-	//UI_FontProviderInterface *fontProviderInterface;
+	UI_FontProviderInterface *fontProviderInterface;
 
 	Rml::Core::Context *contextMain;
 	Rml::Core::Context *contextQuick;

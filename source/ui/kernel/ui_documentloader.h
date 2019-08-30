@@ -56,8 +56,8 @@ public:
 
 	const std::string &getName() const { return documentName; }
 	// addref? nah.. make sure you dont leave a pointer hanging and also check for NULL
-	void setRocketDocument( Rml::Core::ElementDocument *elem ) { rocketDocument = Rml::Core::ElementPtr(elem); }
-	Rml::Core::ElementDocument *getRocketDocument() { return static_cast<Rml::Core::ElementDocument*>(rocketDocument.get()); }
+	void setRocketDocument( Rml::Core::ElementDocument *elem ) { rocketDocument = elem; }
+	Rml::Core::ElementDocument *getRocketDocument() { return rocketDocument; }
 
 	// other rocket wrappers
 	void Show( bool show = true, bool modal = false );
@@ -73,7 +73,7 @@ public:
 private:
 	// this will also be the name for the asmodule!
 	std::string documentName;
-	Rml::Core::ElementPtr rocketDocument;
+	Rml::Core::ElementDocument *rocketDocument;
 	NavigationStack *stack;
 	bool viewed;
 };

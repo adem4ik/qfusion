@@ -74,7 +74,7 @@ namespace ASUI
 // EVENT
 
 void PrebindEvent( ASInterface *as ) {
-	ASBind::Class<Rml::Core::Event, ASBind::class_ref>( as->getEngine() );
+	ASBind::Class<Rml::Core::Event, ASBind::class_nocount>( as->getEngine() );
 }
 
 static Element *Event_GetTargetElement( Event *self ) {
@@ -499,7 +499,7 @@ void ElementForm_Submit( ElementForm *self ) {
 }
 
 static void PreBindElementForm( ASInterface *as ) {
-	ASBind::Class<ElementForm, ASBind::class_ref>( as->getEngine() );
+	ASBind::Class<ElementForm, ASBind::class_nocount>( as->getEngine() );
 }
 
 static void BindElementForm( ASInterface *as ) {
@@ -573,7 +573,7 @@ static int ElementTabSet_GetActiveTab( ElementTabSet *self ) {
 }
 
 static void PreBindElementTabSet( ASInterface *as ) {
-	ASBind::Class<ElementTabSet, ASBind::class_ref>( as->getEngine() );
+	ASBind::Class<ElementTabSet, ASBind::class_nocount>( as->getEngine() );
 }
 
 static void BindElementTabSet( ASInterface *as ) {
@@ -631,7 +631,7 @@ static Element *ElementDocument_GetBody( ElementDocument *self ) {
 }
 
 static void PreBindElementDocument( ASInterface *as ) {
-	ASBind::Class<ElementDocument, ASBind::class_ref>( as->getEngine() );
+	ASBind::Class<ElementDocument, ASBind::class_nocount>( as->getEngine() );
 }
 
 static void BindElementDocument( ASInterface *as ) {
@@ -696,7 +696,7 @@ static void ElementFormControl_SetDisabled( ElementFormControl *self, bool disab
 }
 
 static void PreBindElementFormControl( ASInterface *as ) {
-	ASBind::Class<ElementFormControl, ASBind::class_ref>( as->getEngine() );
+	ASBind::Class<ElementFormControl, ASBind::class_nocount>( as->getEngine() );
 }
 
 static void BindElementFormControl( ASInterface *as ) {
@@ -783,7 +783,7 @@ static void ElementFormControlDataSelect_Spin( ElementFormControlDataSelect *sel
 }
 
 static void PreBindElementFormControlDataSelect( ASInterface *as ) {
-	ASBind::Class<ElementFormControlDataSelect, ASBind::class_ref>( as->getEngine() );
+	ASBind::Class<ElementFormControlDataSelect, ASBind::class_nocount>( as->getEngine() );
 }
 
 static void BindElementFormControlDataSelect( ASInterface *as ) {
@@ -840,7 +840,7 @@ static unsigned int DataGridRow_GetIndex( ElementDataGridRow *self ) {
 }
 
 static void PreBindElementDataGridRow( ASInterface *as ) {
-	ASBind::Class<ElementDataGridRow, ASBind::class_ref>( as->getEngine() );
+	ASBind::Class<ElementDataGridRow, ASBind::class_nocount>( as->getEngine() );
 }
 
 static void BindElementDataGridRow( ASInterface *as ) {
@@ -919,7 +919,7 @@ static void DataGrid_SetDataSource( ElementDataGrid *self, const asstring_t &sou
 }
 
 static void PreBindElementDataGrid( ASInterface *as ) {
-	ASBind::Class<ElementDataGrid, ASBind::class_ref>( as->getEngine() );
+	ASBind::Class<ElementDataGrid, ASBind::class_nocount>( as->getEngine() );
 }
 
 static void BindElementDataGrid( ASInterface *as ) {
@@ -970,7 +970,7 @@ static float ElementImage_GetHeight( ElementImage *self ) {
 }
 
 static void PreBindElementImage( ASInterface *as ) {
-	ASBind::Class<ElementImage, ASBind::class_ref>( as->getEngine() );
+	ASBind::Class<ElementImage, ASBind::class_nocount>( as->getEngine() );
 }
 
 static void BindElementImage( ASInterface *as ) {
@@ -997,7 +997,7 @@ static void BindElementImage( ASInterface *as ) {
 // Bind
 
 void PrebindElement( ASInterface *as ) {
-	ASBind::Class<Rml::Core::Element, ASBind::class_ref>( as->getEngine() );
+	ASBind::Class<Rml::Core::Element, ASBind::class_nocount>( as->getEngine() );
 
 	PreBindElementDocument( as );
 

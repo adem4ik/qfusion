@@ -112,8 +112,14 @@ private:
 
 		ElementDocument *rocket_document = framed_document->getRocketDocument();
 
-		AppendChild( ElementPtr( rocket_document ) );
-		rocket_document->SetProperty( "overflow", "auto" );
+		//if (rocket_document->GetParentNode() != nullptr) {
+		//	rocket_document->GetParentNode()->RemoveChild(rocket_document);
+		//}
+		//AppendChild( ElementPtr( rocket_document ) );
+
+		//rocket_document->SetProperty( "overflow", "auto" );
+		rocket_document->SetProperty(Rml::Core::PropertyId::OverflowX, Rml::Core::Property(Rml::Core::Style::Overflow::Auto));
+		rocket_document->SetProperty(Rml::Core::PropertyId::OverflowX, Rml::Core::Property(Rml::Core::Style::Overflow::Auto));
 		rocket_document->PullToFront();
 
 		AttachToOwnerDocument();

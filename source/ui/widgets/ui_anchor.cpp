@@ -52,14 +52,14 @@ public:
 		}
 	}
 
-	virtual void ProcessEvent( Event &event ) {
+	virtual void ProcessDefaultAction( Event &event ) override {
 		if( event == "click" ) {
 			// TODO: wrap this to UI_Main that will catch errors and the
 			// new rootdocument (along with populating href with correct
 			// path)
 			String href = GetAttribute<String>( "href", "" );
 			if( href.empty() ) {
-				Com_Printf( "AnchorWidget::ProcessEvent: empty href\n" );
+				Com_Printf( "AnchorWidget::ProcessDefaultAction: empty href\n" );
 				return;
 			}
 

@@ -66,13 +66,15 @@ RocketModule::RocketModule( int vidWidth, int vidHeight, float pixelRatio )
 	fsInterface = __new__( UI_FileInterface )();
 	Rml::Core::SetFileInterface( fsInterface );
 
-	//fontProviderInterface = __new__( UI_FontProviderInterface )( renderInterface );
-	//Rml::Core::SetFontProviderInterface( fontProviderInterface );
+	fontProviderInterface = __new__( UI_FontProviderInterface )( renderInterface );
+	Rml::Core::SetFontSubsystemInterface( fontProviderInterface );
 
 	rocketInitialized = Rml::Core::Initialise();
 	if( !rocketInitialized ) {
 		throw std::runtime_error( "UI: Rml::Core::Initialise failed" );
 	}
+
+	Rml::Core::RegisterPlugin( this );
 
 	// initialize the controls plugin
 	Rml::Controls::Initialise();
@@ -88,22 +90,16 @@ RocketModule::RocketModule( int vidWidth, int vidHeight, float pixelRatio )
 	memset( contextsTouch, -1, sizeof( *contextsTouch ) * UI_NUM_CONTEXTS );
 }
 
-// here for hax0rz, TODO: move to "common" area
-template<typename T>
-void unref_object( T *obj ) {
-	obj->RemoveReference();
-}
-
 RocketModule::~RocketModule() {
 	contextMain = 0;
 	contextQuick = 0;
 
 	if( rocketInitialized ) {
+		rocketInitialized = false;
 		Rml::Core::Shutdown();
 	}
-	rocketInitialized = false;
 
-	//__SAFE_DELETE_NULLIFY( fontProviderInterface );
+	__SAFE_DELETE_NULLIFY( fontProviderInterface );
 	__SAFE_DELETE_NULLIFY( fsInterface );
 	__SAFE_DELETE_NULLIFY( systemInterface );
 	__SAFE_DELETE_NULLIFY( renderInterface );
@@ -295,12 +291,14 @@ void RocketModule::cancelTouches( int contextId ) {
 
 //==================================================
 
-Rml::Core::ElementDocument *RocketModule::loadDocument( int contextId, const char *filename, bool show, void *user_data ) {
+Rml::Core::ElementDocument *RocketModule::loadDocument( int contextId, const char *filename, bool show, void *script_object ) {
 	auto *context = contextForId( contextId );
 	ASUI::UI_ScriptDocument *document = dynamic_cast<ASUI::UI_ScriptDocument *>( context->LoadDocument( filename ) );
 	if( !document ) {
 		return NULL;
 	}
+
+	document->SetScriptObject( script_object );
 
 	if( show ) {
 		// load documents with autofocus disabled
@@ -320,6 +318,20 @@ Rml::Core::ElementDocument *RocketModule::loadDocument( int contextId, const cha
 
 void RocketModule::closeDocument( Rml::Core::ElementDocument *doc ) {
 	doc->Close();
+}
+
+int RocketModule::GetEventClasses() {
+	return Rml::Core::Plugin::EVT_DOCUMENT;
+}
+
+void RocketModule::OnDocumentLoad( Rml::Core::ElementDocument *document ) {
+	ASUI::UI_ScriptDocument *ui_document = dynamic_cast<ASUI::UI_ScriptDocument *>( document );
+	ui_document->BuildScripts();
+}
+
+void RocketModule::OnDocumentUnload( Rml::Core::ElementDocument *document ) {
+	ASUI::UI_ScriptDocument *ui_document = dynamic_cast<ASUI::UI_ScriptDocument *>( document );
+	ui_document->DestroyScripts();
 }
 
 //==================================================

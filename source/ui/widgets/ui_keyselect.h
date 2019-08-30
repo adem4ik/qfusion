@@ -42,7 +42,7 @@ public:
 
 	/// Called for every event sent to this element or one of its descendants.
 	/// @param[in] event The event to process.
-	virtual void ProcessEvent( Event& event );
+	virtual void ProcessEvent( Event &event );
 
 	// index can be 0 or 1
 	int GetKey( int index );

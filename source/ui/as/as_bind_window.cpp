@@ -56,10 +56,7 @@ public:
 
 		// remove schedulers for all documents we hold references to
 		for( SchedulerMap::iterator it = schedulers.begin(); it != schedulers.end(); ++it ) {
-			ElementDocument *doc = it->first;
 			FunctionCallScheduler *scheduler = it->second;
-
-			doc->RemoveEventListener( "beforeUnload", this );
 
 			scheduler->shutdown();
 			__delete__( scheduler );
@@ -340,8 +337,8 @@ private:
 		if( !m ) {
 			return NULL;
 		}
-		WSWUI::Document *ui_document = static_cast<WSWUI::Document *>( m->GetUserData() );
-		return ui_document ? ui_document->getRocketDocument() : NULL;
+		UI_ScriptDocument *ui_document = static_cast<UI_ScriptDocument *>( m->GetUserData() );
+		return ui_document;
 	}
 
 	static WSWUI::NavigationStack *GetCurrentUIStack( void ) {
@@ -350,8 +347,9 @@ private:
 		if( !m ) {
 			return NULL;
 		}
-		WSWUI::Document *ui_document = static_cast<WSWUI::Document *>( m->GetUserData() );
-		return ui_document ? ui_document->getStack() : NULL;
+		UI_ScriptDocument *ui_document = static_cast<UI_ScriptDocument *>( m->GetUserData() );
+		WSWUI::Document *wsw_document = static_cast<WSWUI::Document *>( ui_document->GetScriptObject() );
+		return wsw_document ? wsw_document->getStack() : NULL;
 	}
 
 	void detachAsEventListener( void ) {
@@ -371,11 +369,8 @@ private:
 
 		FunctionCallScheduler *scheduler;
 		if( it == schedulers.end() ) {
-			doc->AddEventListener( "beforeUnload", this );
-
 			scheduler = __new__( FunctionCallScheduler )();
 			scheduler->init( UI_Main::Get()->getAS() );
-
 			schedulers[doc] = scheduler;
 		} else {
 			scheduler = it->second;

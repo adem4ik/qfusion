@@ -116,8 +116,8 @@ void DocumentCache::clearCaches() {
 
 	for( DocumentSet::iterator it = documentSet.begin(); it != documentSet.end(); ++it ) {
 		if( ( *it )->getRocketDocument() ) {
-			( *it )->setRocketDocument( nullptr );
 			loader.closeDocument( ( *it ) );
+			( *it )->setRocketDocument( nullptr );
 		}
 	}
 

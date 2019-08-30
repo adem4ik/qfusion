@@ -39,10 +39,6 @@ public:
 	}
 
 	~SelectableDataGrid() {
-		if( lastSelectedRow.get() != nullptr ) {
-			lastSelectedRow->SetPseudoClass( "selected", false );
-			lastSelectedRow = nullptr;
-		}
 	}
 
 	/// Called for every event sent to this element or one of its descendants.
@@ -92,7 +88,7 @@ public:
 				}
 				if( index >= 0 ) {
 					// deselect last selected row
-					if( lastSelectedRow.get() != row ) {
+					if( lastSelectedRow != row ) {
 						if( lastSelectedRow ) {
 							lastSelectedRow->SetPseudoClass( "selected", false );
 							lastSelectedRow = nullptr;
@@ -100,7 +96,7 @@ public:
 					}
 
 					// select clicked row
-					lastSelectedRow = ElementPtr( row );
+					lastSelectedRow = row;
 					lastSelectedRowIndex = index;
 
 					this->SetProperty( "selected-row", indexStr );
@@ -154,7 +150,7 @@ public:
 	}
 
 private:
-	ElementPtr lastSelectedRow;
+	Element *lastSelectedRow;
 	int lastSelectedRowIndex;
 };
 

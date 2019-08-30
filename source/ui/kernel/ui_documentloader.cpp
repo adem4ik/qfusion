@@ -22,7 +22,7 @@ Document::~Document() {
 }
 
 void Document::Show( bool show, bool modal ) {
-	auto *doc = static_cast<Rml::Core::ElementDocument*>(rocketDocument.get());
+	auto *doc = rocketDocument;
 	if( doc == nullptr ) {
 		return;
 	}
@@ -35,7 +35,7 @@ void Document::Show( bool show, bool modal ) {
 }
 
 void Document::Hide() {
-	auto *doc = static_cast<Rml::Core::ElementDocument*>(rocketDocument.get());
+	auto *doc = rocketDocument;
 	if( doc == nullptr ) {
 		return;
 	}
@@ -43,7 +43,7 @@ void Document::Hide() {
 }
 
 void Document::Focus() {
-	auto *doc = static_cast<Rml::Core::ElementDocument*>(rocketDocument.get());
+	auto *doc = rocketDocument;
 	if( doc == nullptr ) {
 		return;
 	}
@@ -52,7 +52,7 @@ void Document::Focus() {
 }
 
 void Document::FocusFirstTabElement() {
-	auto *doc = static_cast<Rml::Core::ElementDocument*>(rocketDocument.get());
+	auto *doc = rocketDocument;
 	if( doc == nullptr ) {
 		return;
 	}
@@ -63,7 +63,7 @@ void Document::FocusFirstTabElement() {
 }
 
 bool Document::IsModal() {
-	auto *doc = static_cast<Rml::Core::ElementDocument*>(rocketDocument.get());
+	auto *doc = rocketDocument;
 	if( doc == nullptr ) {
 		return false;
 	}
@@ -97,11 +97,6 @@ Document *DocumentLoader::loadDocument( const char *path, NavigationStack *stack
 		return NULL;
 	}
 
-	// handle postponed onload events (HOWTO handle these in cached documents?)
-	Rml::Core::Dictionary ev_parms;
-	ev_parms["owner"] = loadedDocument;
-	rocketDocument->DispatchEvent( "afterLoad", ev_parms );
-
 	return loadedDocument;
 }
 
@@ -110,10 +105,6 @@ void DocumentLoader::closeDocument( Document *document ) {
 	UI_Main *ui = UI_Main::Get();
 	RocketModule *rm = ui->getRocket();
 	Rml::Core::ElementDocument *rocketDocument = document->getRocketDocument();
-
-	// handle postponed onload events (HOWTO handle these in cached documents?)
-	Rml::Core::Dictionary ev_parms;
-	rocketDocument->DispatchEvent( "beforeUnload", ev_parms );
 
 	rm->closeDocument( rocketDocument );
 }

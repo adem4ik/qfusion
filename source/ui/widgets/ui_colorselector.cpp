@@ -119,7 +119,7 @@ public:
 	bool isCustom() const { return hasRGB == false; }
 
 private:
-	ElementPtr selector;
+	ColorSelector *selector;
 	cvar_t *cvar;           // set, if this is "custom color"
 	String color;           // just use rocket string in rocket element
 	bool hasRGB;            // if rgb attribute was given on construction
@@ -273,17 +273,15 @@ void ColorBlock::ProcessDefaultAction( Event &event ) {
 	// same color, doing this on the latter ones will just select
 	// the first one with matching color..
 	if( event.GetType() == "click" && selector != nullptr ) {
-		// selector->SetValue( color );
-		auto sel = dynamic_cast<ColorSelector*>( selector.get() );
-		sel->selectColorBlock( this );
-		sel->setValueDirect( color );
+		selector->selectColorBlock( this );
+		selector->setValueDirect( color );
 	}
 
 	Element::ProcessDefaultAction( event );
 }
 
 void ColorBlock::setSelector( ColorSelector *_selector ) {
-	selector = ElementPtr(_selector);
+	selector = _selector;
 
 	// if attributes didnt specify color, see if we can fetch the
 	// associated cvar from the parent

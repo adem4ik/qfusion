@@ -104,15 +104,11 @@ bool UI_RenderInterface::GenerateTexture( Rml::Core::TextureHandle & texture_han
 	shader_t *shader;
 	auto name = Rml::Core::CreateString( MAX_QPATH, "ui_raw_%d", texCounter++ );
 
-	// Com_Printf("RenderInterface::GenerateTexture: going to register %s %dx%d\n", name.CString(), source_dimensions.x, source_dimensions.y );
-	// LATER
 	shader = trap::R_RegisterRawPic( name.c_str(), source_dimensions.x, source_dimensions.y, (uint8_t*)source, /*source_samples*/4 );
 	if( !shader ) {
 		Com_Printf( S_COLOR_RED "Warning: RenderInterface couldnt register raw pic %s!\n", name.c_str() );
 		return false;
 	}
-
-	// Com_Printf( "RenderInterface::GenerateTexture %s successful\n", name.CString() );
 
 	AddShaderToCache( name );
 

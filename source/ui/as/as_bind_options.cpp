@@ -23,7 +23,7 @@ static Element *OptionsForm_CastToElement( OptionsForm *self ) {
 }
 
 void PrebindOptionsForm( ASInterface *as ) {
-	ASBind::Class<WSWUI::OptionsForm, ASBind::class_ref>( as->getEngine() );
+	ASBind::Class<WSWUI::OptionsForm, ASBind::class_nocount>( as->getEngine() );
 }
 
 void BindOptionsForm( ASInterface *as ) {
