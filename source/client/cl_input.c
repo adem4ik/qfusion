@@ -114,14 +114,14 @@ void CL_ClearInputState( void ) {
 static void CL_UpdateGameInput( int frameTime ) {
 	int mx, my;
 
-	IN_GetMouseMovement( &mx, &my );
-
 	// refresh input in cgame
 	CL_GameModule_InputFrame( frameTime );
 
 	if( cls.key_dest == key_menu ) {
-		CL_UIModule_MouseMove( true, frameTime, mx, my );
+		IN_GetMousePosition( &mx, &my );
+		CL_UIModule_MouseSet( true, mx, my, true );
 	} else {
+		IN_GetMouseMovement( &mx, &my );
 		CL_GameModule_MouseMove( mx, my );
 	}
 
